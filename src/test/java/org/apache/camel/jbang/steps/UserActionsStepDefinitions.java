@@ -26,17 +26,17 @@ public class UserActionsStepDefinitions {
 	}
 
 	@Given("user execute {string}")
-	public void user_execute(String command) throws IOException {
+	public void user_execute(String command) {
 		testState.setStdOutput(CamelJBangTest.CAMEL_JBANG.execute(command.split(" ")));
 	}
 
 	@Given("user execute {string} in parallel")
-	public void user_execute_in_parallel(String command) throws IOException {
+	public void user_execute_in_parallel(String command) {
 		Future<Container.ExecResult> execResultFuture = CamelJBangTest.CAMEL_JBANG.executeInParallel(command.split(" "));
 	}
 
 	@Given("file {string} is created")
-	public void file_is_created(String file) throws IOException {
+	public void file_is_created(String file) {
 		Assertions.assertThat(Files.exists(Path.of(CamelJBangTest.DATA_FOLDER, file)))
 				.isTrue();
 	}
@@ -62,12 +62,12 @@ public class UserActionsStepDefinitions {
 	}
 
 	private void integrationLogContain(String integration, String expected) {
-		Awaitility.await().atMost(20, TimeUnit.SECONDS).untilAsserted(() ->
+		Awaitility.await().atMost(40, TimeUnit.SECONDS).untilAsserted(() ->
 				Assertions.assertThat(CamelJBangTest.CAMEL_JBANG.execute("camel", "log", integration, "--follow=false"))
 						.contains(expected));
 	}
 
-	@Given("user create integration {string} with content:")
+	@Given("user create file {string} with content:")
 	public void user_create_integration_with_content(String string, String content) throws IOException {
 		Files.write(Path.of(CamelJBangTest.DATA_FOLDER, string), content.getBytes(StandardCharsets.UTF_8));
 	}

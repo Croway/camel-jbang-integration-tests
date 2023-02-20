@@ -13,7 +13,7 @@ Feature: Test camel run
 
   Scenario: Running routes from multiple files
     Given user execute "camel init route1.yaml --directory=app"
-    And user create integration "route2.yaml" with content:
+    And user create file "route2.yaml" with content:
       """
       # camel-k: language=yaml
 
@@ -42,7 +42,7 @@ Feature: Test camel run
   #  And user execute "camel stop CodeRoute"
 
   Scenario: Dev mode with live reload
-    Given user create integration "live-reload.yaml" with content:
+    Given user create file "live-reload.yaml" with content:
       """
       # camel-k: language=yaml
 

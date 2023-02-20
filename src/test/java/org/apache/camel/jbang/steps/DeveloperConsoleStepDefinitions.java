@@ -39,8 +39,7 @@ public class DeveloperConsoleStepDefinitions {
 		HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
 
 		if (response.statusCode() != 200) {
-			throw new RuntimeException(
-					String.format("Call to endpoint %s failed with status %s and body %s", endpoint, response.statusCode(), response.body()));
+			Assertions.fail(String.format("Call to endpoint %s failed with status %s and body %s", endpoint, response.statusCode(), response.body()));
 		}
 
 		testState.setHttpResponse(response);

@@ -1,10 +1,10 @@
 package org.apache.camel.jbang;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import org.assertj.core.api.Assertions;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.Container;
 import org.testcontainers.containers.GenericContainer;
@@ -86,21 +86,18 @@ public class CamelJBangContainerExtension implements BeforeAllCallback, AfterAll
 		try {
 			Container.ExecResult execResult = CONTAINER.execInContainer(command);
 			if (execResult.getExitCode() != 0) {
-				throw new RuntimeException(execResult.getStderr());
+				Assertions.fail(String.format("command %s failed with error %s", command, execResult.getStderr()));
 			}
 
 			return execResult.getStdout();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		} catch (InterruptedException e) {
+		} catch (Exception e) {
+			Assertions.fail(String.format("command %s failed", command), e);
 			throw new RuntimeException(e);
 		}
 	}
 
 	public Future<Container.ExecResult> executeInParallel(String... command) {
-		return camelJBangParallelExecutor.submit(() -> {
-			return CONTAINER.execInContainer(command);
-		});
+		return camelJBangParallelExecutor.submit(() -> CONTAINER.execInContainer(command));
 	}
 
 	public void start() {
