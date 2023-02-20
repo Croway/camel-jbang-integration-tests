@@ -2,6 +2,7 @@ package org.apache.camel.jbang.steps;
 
 import org.apache.camel.jbang.CamelJBangProperties;
 import org.apache.camel.jbang.CamelJBangTest;
+import org.apache.camel.jbang.CamelJBangTestState;
 
 import org.assertj.core.api.Assertions;
 import org.awaitility.Awaitility;
@@ -18,12 +19,15 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 
 public class UserActionsStepDefinitions {
+	private CamelJBangTestState testState;
 
-	private String output;
+	public UserActionsStepDefinitions(CamelJBangTestState testState) {
+		this.testState = testState;
+	}
 
 	@Given("user execute {string}")
 	public void user_execute(String command) throws IOException {
-		output = CamelJBangTest.CAMEL_JBANG.execute(command.split(" "));
+		testState.setStdOutput(CamelJBangTest.CAMEL_JBANG.execute(command.split(" ")));
 	}
 
 	@Given("user execute {string} in parallel")
@@ -44,7 +48,7 @@ public class UserActionsStepDefinitions {
 
 	@Then("{string} is logged")
 	public void is_logged(String string) {
-		Assertions.assertThat(output).contains(string);
+		Assertions.assertThat(testState.getStdOutput()).contains(string);
 	}
 
 	@Then("integration {string} logs {string}")

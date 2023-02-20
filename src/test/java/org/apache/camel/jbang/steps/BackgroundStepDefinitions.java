@@ -6,8 +6,6 @@ import org.apache.camel.jbang.CamelJBangTest;
 import org.assertj.core.api.Assertions;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import io.cucumber.java.en.And;
 

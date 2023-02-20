@@ -1,4 +1,4 @@
-FROM quay.io/ubi8/openjdk-17
+FROM eclipse-temurin:17.0.6_10-jdk
 
 WORKDIR /home
 
@@ -12,11 +12,9 @@ ENV PATH="${PATH}:/home/jbang/bin"
 RUN jbang trust add https://raw.githubusercontent.com/apache/camel/camel-3.20.1/dsl/camel-jbang/camel-jbang-main/src/main/jbang/main/ && \
     jbang app install https://raw.githubusercontent.com/apache/camel/camel-3.20.1/dsl/camel-jbang/camel-jbang-main/src/main/jbang/main/CamelJBang.java
 
-RUN  mkdir app
-
 RUN cp /root/.jbang/bin/CamelJBang /root/.jbang/bin/camel
-ENV PATH=${PATH}:/root/.jbang/bin
+ENV PATH=${PATH}:/root/.jbang/bin\
+
+EXPOSE 8080
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
-
-# ENTRYPOINT ["/root/.jbang/bin/CamelJBang"]

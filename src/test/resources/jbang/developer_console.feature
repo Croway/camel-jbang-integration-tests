@@ -1,9 +1,9 @@
-Feature: Test camel run
+Feature: Test developer console
 
   Background:
     Given camel jbang is installed
 
-  Scenario: User execute camel run on cli
+  Scenario: User execute app and interact with developer console
     Given user execute "camel init developer_console.yaml --directory=app"
     Then file "developer_console.yaml" is created
     When user execute "camel run app/developer_console.yaml --console" in parallel

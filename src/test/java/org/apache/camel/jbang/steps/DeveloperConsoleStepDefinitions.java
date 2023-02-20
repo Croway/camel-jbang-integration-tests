@@ -1,6 +1,7 @@
 package org.apache.camel.jbang.steps;
 
 import org.apache.camel.jbang.CamelJBangTest;
+import org.apache.camel.jbang.CamelJBangTestState;
 
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
@@ -20,15 +21,19 @@ public class DeveloperConsoleStepDefinitions {
 
 	private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder().build();
 
-	private HttpResponse<String> response;
+	protected CamelJBangTestState testState;
+
+	public DeveloperConsoleStepDefinitions(CamelJBangTestState testState) {
+		this.testState = testState;
+	}
 
 	@And("user execute HTTP request {string}")
 	public void execute_http_request(String url) throws IOException, InterruptedException {
-		String endpoint = "http://localhost:" + CamelJBangTest.CAMEL_JBANG.getPort() + url;
+		String endpoint = CamelJBangTest.CAMEL_JBANG.getIntegrationBaseUrl() + url;
 
 		HttpRequest request = HttpRequest.newBuilder()
 				.GET()
-				.uri(URI.create("http://localhost:" + CamelJBangTest.CAMEL_JBANG.getPort() + url))
+				.uri(URI.create(endpoint))
 				.build();
 
 		HttpResponse<String> response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
@@ -38,11 +43,11 @@ public class DeveloperConsoleStepDefinitions {
 					String.format("Call to endpoint %s failed with status %s and body %s", endpoint, response.statusCode(), response.body()));
 		}
 
-		this.response = response;
+		testState.setHttpResponse(response);
 	}
 
 	@Then("HTTP response contains {string}")
 	public void http_response_contains(String expected) {
-		Assertions.assertThat(response.body()).contains(expected);
+		Assertions.assertThat(testState.getHttpResponse().body()).contains(expected);
 	}
 }

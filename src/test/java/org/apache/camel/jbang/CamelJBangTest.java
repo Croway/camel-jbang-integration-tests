@@ -10,6 +10,9 @@ import org.junit.platform.suite.api.Suite;
 import io.cucumber.java.AfterAll;
 import io.cucumber.java.BeforeAll;
 
+/**
+ * Execute all camel-jbang tests
+ */
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("jbang")
