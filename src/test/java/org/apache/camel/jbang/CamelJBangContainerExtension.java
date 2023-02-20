@@ -7,6 +7,9 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.Container;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.containers.wait.strategy.WaitStrategy;
+import org.testcontainers.containers.wait.strategy.WaitStrategyTarget;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 
 import com.github.dockerjava.api.command.CreateContainerCmd;
@@ -14,6 +17,8 @@ import com.github.dockerjava.api.command.CreateContainerCmd;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -68,10 +73,18 @@ public class CamelJBangContainerExtension implements BeforeAllCallback, AfterAll
 								.run("cp /root/.jbang/bin/CamelJBang /root/.jbang/bin/camel")
 								.run("cp /root/.jbang/bin/CamelJBang /bin/camel")
 								.env("PATH", "${PATH}:/root/.jbang/bin")
+								.expose(8080)
 								.entryPoint("tail", "-f", "/dev/null")
 								.build()
 				))
+				.withExposedPorts(8080)
 				.withFileSystemBind(CamelJBangTest.DATA_FOLDER, "/home/app", BindMode.READ_WRITE);
+
+		CONTAINER.setWaitStrategy(null); // 8080 Port will be exposed later on, remove default wait strategy
+	}
+
+	public int getPort() {
+		return CONTAINER.getMappedPort(8080);
 	}
 
 	public String execute(String... command) {

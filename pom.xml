@@ -21,7 +21,7 @@
         <assertj.version>3.24.2</assertj.version>
         <awaitility.version>4.2.0</awaitility.version>
 
-        <camel.jbang.dockerBaseImage>openjdk:17.0.1-jdk</camel.jbang.dockerBaseImage>
+        <camel.jbang.dockerBaseImage>eclipse-temurin:17.0.6_10-jdk</camel.jbang.dockerBaseImage>
         <camel.jbang.jbangVersion>v0.103.1</camel.jbang.jbangVersion>
         <camel.jbang.camelVersion>3.20.2</camel.jbang.camelVersion>
         <camel.tested.version>3.20.2</camel.tested.version>
