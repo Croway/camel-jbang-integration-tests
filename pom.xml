@@ -24,6 +24,7 @@
         <camel.jbang.dockerBaseImage>eclipse-temurin:17.0.6_10-jdk</camel.jbang.dockerBaseImage>
         <camel.jbang.jbangVersion>v0.103.1</camel.jbang.jbangVersion>
         <camel.jbang.camelVersion>3.20.2</camel.jbang.camelVersion>
+        <camel.jbang.camelVersionRef>main</camel.jbang.camelVersionRef>
         <camel.tested.version>3.20.2</camel.tested.version>
     </properties>
 

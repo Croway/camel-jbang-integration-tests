@@ -58,7 +58,7 @@ public class UserActionsStepDefinitions {
 
 	@Then("integration {string} logs expected camel version")
 	public void integration_logs_camel_version(String integration) {
-		integrationLogContain(integration, CamelJBangProperties.getCamelTestedVersion());
+		integrationLogContain(integration, CamelJBangProperties.CAMEL_TESTED_VERSION);
 	}
 
 	private void integrationLogContain(String integration, String expected) {

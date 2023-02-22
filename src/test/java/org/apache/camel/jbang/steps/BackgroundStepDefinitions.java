@@ -14,6 +14,6 @@ public class BackgroundStepDefinitions {
 	@And("camel jbang is installed")
 	public void camel_jbang_is_installed() throws IOException {
 		Assertions.assertThat(CamelJBangTest.CAMEL_JBANG.execute("camel", "-V"))
-				.contains(CamelJBangProperties.getCamelVersion());
+				.contains(CamelJBangProperties.CAMEL_VERSION);
 	}
 }

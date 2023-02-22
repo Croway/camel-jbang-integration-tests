@@ -45,29 +45,10 @@ public class CamelJBangContainerExtension implements BeforeAllCallback, AfterAll
 			Assertions.fail(String.format("%s directory cannot be created, %s", CamelJBangTest.DATA_FOLDER, e.getMessage()), e);
 		}
 
-		String jbangDownloadUrl =
-				"https://github.com/jbangdev/jbang/releases/download/" + CamelJBangProperties.getJbangVersion() + "/jbang.zip";
-		String camelJBangTrustUrl = "https://raw.githubusercontent.com/apache/camel/camel-" + CamelJBangProperties.getCamelVersion()
-				+ "/dsl/camel-jbang/camel-jbang-main/src/main/jbang/main/";
-		String camelJBangUrl = camelJBangTrustUrl + "CamelJBang.java";
-
 		CONTAINER = new GenericContainer(
-				new ImageFromDockerfile("camel-jbang", false).withDockerfileFromBuilder(builder ->
-						builder.from(CamelJBangProperties.getDockerBaseImage())
-								.workDir("/home")
-								.run("curl -LjO " + jbangDownloadUrl + " &&"
-										+ " jar xf jbang.zip &&"
-										+ " rm jbang.zip &&"
-										+ " chmod +x jbang/bin/jbang")
-								.env("PATH", "${PATH}:/home/jbang/bin")
-								.run("jbang trust add " + camelJBangTrustUrl)
-								.run("jbang app install " + camelJBangUrl)
-								.run("cp /root/.jbang/bin/CamelJBang /root/.jbang/bin/camel")
-								.env("PATH", "${PATH}:/root/.jbang/bin")
-								.expose(8080)
-								.entryPoint("tail", "-f", "/dev/null")
-								.build()
-				))
+				new ImageFromDockerfile("camel-jbang", false)
+						.withFileFromClasspath("Dockerfile", "Dockerfile")
+						.withBuildArg("CAMEL_REF", CamelJBangProperties.CAMEL_VERSION_REF))
 				.withExposedPorts(8080)
 				.withFileSystemBind(CamelJBangTest.DATA_FOLDER, "/home/app", BindMode.READ_WRITE);
 

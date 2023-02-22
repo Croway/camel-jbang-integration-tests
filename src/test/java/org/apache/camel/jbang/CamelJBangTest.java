@@ -1,6 +1,5 @@
 package org.apache.camel.jbang;
 
-import static io.cucumber.junit.platform.engine.Constants.FEATURES_PROPERTY_NAME;
 import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 
 import org.junit.platform.suite.api.ConfigurationParameter;
