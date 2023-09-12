@@ -1,7 +1,5 @@
 package org.apache.camel.jbang;
 
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import org.assertj.core.api.Assertions;
@@ -13,16 +11,11 @@ import org.testcontainers.images.builder.ImageFromDockerfile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class CamelJBangContainerExtension implements BeforeAllCallback, AfterAllCallback {
+public class CamelJBangContainerExtension extends CamelJBangAbstractExtension {
 
-	public static final GenericContainer CONTAINER;
-
-	private final ExecutorService camelJBangParallelExecutor
-			= Executors.newSingleThreadExecutor();
+	public static GenericContainer CONTAINER;
 
 	@Override
 	public void afterAll(ExtensionContext extensionContext) throws Exception {
@@ -32,27 +25,6 @@ public class CamelJBangContainerExtension implements BeforeAllCallback, AfterAll
 	@Override
 	public void beforeAll(ExtensionContext extensionContext) throws Exception {
 		// TODO find some way to use RegisterExtension with cucumber
-	}
-
-	static {
-		// Create target/data folder so that container user does not mess with permission withFileSystemBind
-		try {
-			Path dataFolder = Path.of(CamelJBangTest.DATA_FOLDER);
-			if (!Files.exists(dataFolder)) {
-				Files.createDirectory(dataFolder);
-			}
-		} catch (IOException e) {
-			Assertions.fail(String.format("%s directory cannot be created, %s", CamelJBangTest.DATA_FOLDER, e.getMessage()), e);
-		}
-
-		CONTAINER = new GenericContainer(
-				new ImageFromDockerfile("camel-jbang", false)
-						.withFileFromClasspath("Dockerfile", "Dockerfile")
-						.withBuildArg("CAMEL_REF", CamelJBangProperties.CAMEL_VERSION_REF))
-				.withExposedPorts(8080)
-				.withFileSystemBind(CamelJBangTest.DATA_FOLDER, "/home/app", BindMode.READ_WRITE);
-
-		CONTAINER.setWaitStrategy(null); // 8080 Port will be exposed later on, remove default wait strategy
 	}
 
 	public int getPort() {
@@ -82,6 +54,25 @@ public class CamelJBangContainerExtension implements BeforeAllCallback, AfterAll
 	}
 
 	public void start() {
+		// Create target/data folder so that container user does not mess with permission withFileSystemBind
+		try {
+			Path dataFolder = Path.of(CamelJBangTest.DATA_FOLDER);
+			if (!Files.exists(dataFolder)) {
+				Files.createDirectory(dataFolder);
+			}
+		} catch (IOException e) {
+			Assertions.fail(String.format("%s directory cannot be created, %s", CamelJBangTest.DATA_FOLDER, e.getMessage()), e);
+		}
+
+		CONTAINER = new GenericContainer(
+				new ImageFromDockerfile("camel-jbang", false)
+						.withFileFromClasspath("Dockerfile", "Dockerfile")
+						.withBuildArg("CAMEL_REF", CamelJBangProperties.CAMEL_VERSION_REF))
+				.withExposedPorts(8080)
+				.withFileSystemBind(CamelJBangTest.DATA_FOLDER, "/home/app", BindMode.READ_WRITE);
+
+		CONTAINER.setWaitStrategy(null); // 8080 Port will be exposed later on, remove default wait strategy
+
 		CONTAINER.start();
 	}
 

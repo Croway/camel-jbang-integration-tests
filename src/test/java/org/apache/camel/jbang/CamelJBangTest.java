@@ -23,7 +23,7 @@ import io.cucumber.java.BeforeAll;
 public class CamelJBangTest {
 
 	// TODO find some way to use @RegisterExtension with cucmber
-	public static CamelJBangContainerExtension CAMEL_JBANG = new CamelJBangContainerExtension();
+	public static CamelJBangAbstractExtension CAMEL_JBANG = CamelJBangExtensionFactory.get();
 	public static final String DATA_FOLDER = "target/data";
 
 	@BeforeAll
