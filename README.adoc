@@ -1,0 +1,13 @@
+= #How to run tests#
+
+Generally:
+
+_mvn -Dcucumber.filter.tags="@executeThese and not @these" clean test_
+
+In this test-suite (if we want to use a filter - e.g.):
+
+*mvn -Dcucumber.filter.tags="@cli_connector" clean test*
+
+If we want to override default properties:
+
+mvn -Dcucumber.filter.tags="@cli_connector" *-Dcamel.tested.version=4.0.0.redhat-00007 -Dopenshift.maven.plugin.version=1.13.1.redhat-00001 -Dcamel.springboot.version=4.0.0.redhat-00012* clean test

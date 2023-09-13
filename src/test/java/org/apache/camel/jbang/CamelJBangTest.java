@@ -24,7 +24,7 @@ public class CamelJBangTest {
 
 	// TODO find some way to use @RegisterExtension with cucmber
 	public static CamelJBangAbstractExtension CAMEL_JBANG = CamelJBangExtensionFactory.get();
-	public static final String DATA_FOLDER = "target/data";
+	public static final String DATA_FOLDER = "app";
 
 	@BeforeAll
 	public static void beforeAll() {

@@ -76,4 +76,15 @@ public class UserActionsStepDefinitions {
 	public void user_update_content_with(String string, String content) throws IOException {
 		Files.write(Path.of(CamelJBangTest.DATA_FOLDER, string), content.getBytes(StandardCharsets.UTF_8));
 	}
+
+	@Then("check the SB platform BOM gav")
+	public void check_platform_bom_gav() {
+		final String bomGroup = "com.redhat.camel.springboot.platform";
+		final String bomArtifactId = "camel-spring-boot-bom";
+		final String bomVersion = System.getProperty("camel.springboot.version");
+
+		Assertions.assertThat(testState.getStdOutput()).contains(bomGroup);
+		Assertions.assertThat(testState.getStdOutput()).contains(bomArtifactId);
+		Assertions.assertThat(testState.getStdOutput()).contains(String.format("<camel.spring.boot-version>%s</camel.spring.boot-version>", bomVersion));
+	}
 }

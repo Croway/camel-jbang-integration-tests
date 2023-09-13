@@ -1,3 +1,4 @@
+@developer_console
 Feature: Test developer console
 
   Background:
@@ -7,7 +8,7 @@ Feature: Test developer console
     Given user execute "camel init developer_console.yaml --directory=app"
     Then file "developer_console.yaml" is created
     When user execute "camel run app/developer_console.yaml --console" in parallel
-    Then integration "developer_console" logs "Hello Camel from yaml"
+    Then integration "developer_console" logs "Hello Camel from route1"
     When user execute HTTP request "/q/dev/"
     Then HTTP response contains "context: Overall information about the CamelContext"
     When user execute HTTP request "/q/dev/top"

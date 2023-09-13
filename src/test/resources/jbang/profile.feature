@@ -1,3 +1,4 @@
+@profile
 Feature: Test profile
 
   Background:

@@ -1,3 +1,4 @@
+@camel_run
 Feature: Test camel run
 
   Background:
@@ -7,7 +8,7 @@ Feature: Test camel run
     Given user execute "camel init cheese.yaml --directory=app"
     Then file "cheese.yaml" is created
     When user execute "camel run app/cheese.yaml" in parallel
-    Then integration "cheese" logs "Hello Camel from yaml"
+    Then integration "cheese" logs "Hello Camel from route1"
     And integration "cheese" logs expected camel version
     And user execute "camel stop cheese"
 
@@ -30,7 +31,7 @@ Feature: Test camel run
     Then file "route1.yaml" is created
     Then file "route2.yaml" is created
     When user execute "camel run app/route1.yaml app/route2.yaml" in parallel
-    Then integration "route1" logs "Hello Camel from yaml"
+    Then integration "route1" logs "Hello Camel from route1"
     And integration "route1" logs "Hello Camel from custom integration"
     And user execute "camel stop route1"
 

@@ -1,3 +1,4 @@
+@camel_run_version
 Feature: Test camel run specific version
 
   Background:

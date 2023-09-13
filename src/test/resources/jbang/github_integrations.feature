@@ -1,3 +1,4 @@
+@github_integrations
 Feature: Test Github integrations
 
   Background:
@@ -8,6 +9,7 @@ Feature: Test Github integrations
     Then integration "Cool" logs "Hello from Camel"
     And user execute "camel stop Cool"
 
+
   Scenario: User run route from gist
     Given user execute "camel run https://gist.github.com/davsclaus/477ddff5cdeb1ae03619aa544ce47e92" in parallel
     Then integration "mybeer" logs "Hello Camel from xml"
@@ -15,6 +17,6 @@ Feature: Test Github integrations
 
   Scenario: User download routes hosted on github
     Given user execute "camel init https://github.com/apache/camel-kamelets-examples/tree/main/jbang/dependency-injection --directory=app"
-    When user execute "camel run app/Echo.java app/Hello.java" in parallel
-    Then integration "Echo" logs "JackJack!! from Echo"
+    When user execute "camel run app/Echo.java app/Hello.java --prop=greeting=Hello" in parallel
+    Then integration "Echo" logs "Hello JackJack!! from Echo"
     And user execute "camel stop Echo"
